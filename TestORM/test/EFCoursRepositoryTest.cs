@@ -15,7 +15,7 @@ namespace TestORMCodeFirst.DAL
     {
         private EFInscCoursRepository repoInscriptions;
         private EFEtudiantRepository repoEtudiants;
-        private EFInscCoursRepository repoCours;
+        private EFCoursRepository repoCours;
 
         private void setUp()
         {
@@ -25,6 +25,52 @@ namespace TestORMCodeFirst.DAL
             repoInscriptions = new EFInscCoursRepository(context);
             repoEtudiants = new EFEtudiantRepository(context);
             repoCours = new EFCoursRepository(context);
+
+
+            /*Etudiant etud = new Etudiant
+            {
+                Nom = "Simard",
+                Prenom = "Serge",
+                DateNaissance = Convert.ToDateTime("1977-10-10"),
+                NoProgramme = 420
+            };
+
+            Etudiant etud2 = new Etudiant
+            {
+                Nom = "Tremblay",
+                Prenom = "Sylvie",
+                DateNaissance = Convert.ToDateTime("1982-10-10"),
+                NoProgramme = 420
+            };*/
+        }
+        [Fact]
+        public void AjouterCoursShouldAddCours()
+        {
+            //Arrange
+            setUp();
+            Cours cours1 = new Cours
+            {
+                CodeCours = "10",
+                Inscriptions = new List<InscriptionCours>(),
+                NomCours = "Jeu vidéo"
+            };
+            //Act
+            repoCours.AjouterCours(cours1);
+            //Assert
+            var result = repoCours.ObtenirListeCours();
+            Assert.Single(result);
+            Assert.Same(cours1, result.First());
+        }
+
+        [Fact]
+        public void ObtenirListeCoursShouldReturnListOfCours()
+        {
+            //Arrange
+            setUp();
+            //Act
+            var result = repoCours.ObtenirListeCours();
+            //Assert
+            Assert.NotNull(result);
         }
     }
 }

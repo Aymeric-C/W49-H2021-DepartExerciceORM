@@ -19,12 +19,13 @@ namespace TestORMCodeFirst.DAL
 
         public void AjouterCours(Cours cours)
         {
-
+            contexte.Cours.Add(cours);
+            contexte.SaveChanges();
         }
 
-        List<Cours>ObtenirListeCours()
+        public List<Cours> ObtenirListeCours()
         {
-
+            return contexte.Cours.ToList();
         }
     }
 }
