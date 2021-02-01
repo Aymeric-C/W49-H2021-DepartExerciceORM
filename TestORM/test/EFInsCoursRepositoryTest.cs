@@ -76,8 +76,27 @@ namespace TestORMCodeFirst.DAL
             repoInscriptions.AjouterInscription(etud1.EtudiantID, "W49", sessionH21);
             repoInscriptions.AjouterInscription(etud2.EtudiantID, "W49", sessionH21);
             repoInscriptions.AjouterInscription(etud6.EtudiantID, "W49", sessionH21);
+
+            //Note finales pour H21
+            repoInscriptions.MettreAJourNoteFinale(1, "W49", sessionH21, 60);
+            repoInscriptions.MettreAJourNoteFinale(2, "W49", sessionH21, 60);
+            repoInscriptions.MettreAJourNoteFinale(6, "W49", sessionH21, 57);
         }
 
+        [Fact]
+        public void ObtenirInscriptionShouldReturnTheRightInscription()
+        {
+            //Arrange
+            SetUp();
+            DataSeed();
+            InscriptionCours expectedCours = new InscriptionCours();
+            //Act
+            InscriptionCours actual = repoInscriptions.ObtenirInscription(1, "W49", "H21");
+            //Assert
+            Assert.True(actual.EtudiantID == 1);
+            Assert.True(actual.CodeCours == "W49");
+            Assert.True(actual.CodeSession == "H21");
+        }
         [Fact]
         public void SupprimerToutesLesInscriptions()
         {
@@ -92,8 +111,6 @@ namespace TestORMCodeFirst.DAL
             var result = repoInscriptions.ObtenirInscriptions();
             Assert.Empty(result);
         }
-
-
         [Fact]
         public void NombreEtudiantsInscritsPourUneSession_QuandAucunCours()
         {
@@ -107,7 +124,6 @@ namespace TestORMCodeFirst.DAL
             // Assert
             Assert.Equal(0, NbInscriptions);
         }
-
         [Fact]
         public void NombreEtudiantsInscritsPourUneSession_QuandUnCours()
         {
@@ -121,7 +137,6 @@ namespace TestORMCodeFirst.DAL
             // Assert
             Assert.Equal(3, NbInscriptions);
         }
-
         [Fact]
         public void NombreEtudiantsInscritsPourUneSession_QuandPlusieursCours()
         {
@@ -135,6 +150,38 @@ namespace TestORMCodeFirst.DAL
             // Assert
             Assert.Equal(5, NbInscriptions);
         }
-
+        [Fact]
+        public void MettreAJourNoteFinaleShouldUpdateNoteFinale()
+        {
+            //Arrange
+            SetUp();
+            DataSeed();
+            //Act
+            repoInscriptions.MettreAJourNoteFinale(1, "W49", "H21", 70);
+            //Assert
+            Assert.True(repoInscriptions.ObtenirInscription(1, "W49", "H21").NoteFinale == 70);
+        }
+        [Fact]
+        public void ObtenirPourUneClasseLaMoyenneShouldReturnAverage()
+        {
+            //Arrange
+            SetUp();
+            DataSeed();
+            //Act
+            double moyenne = repoInscriptions.ObtenirPourUneClasseLaMoyenne("W49", "H21");
+            //Assert
+            Assert.True(moyenne == 59);
+        }
+        [Fact]
+        public void ObtenirPourUneClasseNombreEchecsShouldReturnCountOfCoursUnder60Percent()
+        {
+            //Arrange
+            SetUp();
+            DataSeed();
+            //Act
+            int nbEchec = repoInscriptions.ObtenirPourUneClasseNombreEchecs("W49", "H21");
+            //Assert
+            Assert.Equal(1,nbEchec); 
+        }
     }
 }

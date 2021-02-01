@@ -20,7 +20,7 @@ namespace TestORMCodeFirst.DAL
         private void setUp()
         {
             var builder = new DbContextOptionsBuilder<CegepContext>();
-            builder.UseInMemoryDatabase(databaseName: "testInscription_db");   // Database en mémoire
+            builder.UseInMemoryDatabase(databaseName: "testCours_db");   // Database en mémoire
             var context = new CegepContext(builder.Options);
             repoInscriptions = new EFInscCoursRepository(context);
             repoEtudiants = new EFEtudiantRepository(context);
@@ -72,5 +72,7 @@ namespace TestORMCodeFirst.DAL
             //Assert
             Assert.NotNull(result);
         }
+
+
     }
 }
