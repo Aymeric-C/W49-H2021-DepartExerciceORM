@@ -14,6 +14,7 @@ namespace TestORMCodeFirst.Entities
         //Propriétés
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Column(TypeName = "varchar(10)")]
         public string CodeCours { get; set; }
         
         [Required]
@@ -22,7 +23,5 @@ namespace TestORMCodeFirst.Entities
 
         //Propriétés de navigation
         public virtual ICollection<InscriptionCours> Inscriptions { get; set; }
-
-
     }
 }
